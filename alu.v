@@ -1,4 +1,4 @@
-`include "simple/funct.vh"
+`include "simple/asm.vh"
 
 module alu ( input [15:0] in_1,
              input [15:0] in_2,
@@ -13,8 +13,8 @@ module alu ( input [15:0] in_1,
         `FUNCT_SUB: out <= in_1 - in_2;
         `FUNCT_AND: out <= in_1 & in_2;
         `FUNCT_OR: out <= in_1 | in_2;
-        //`FUNCT_SLTU: out = in_1 (***) in_2;
-        //`FUNCT_SLT: out = in_1 (**) in_2;
+        `FUNCT_SLT: out <= $signed(in_1) < $signed(in_2);
+        `FUNCT_SLTU: out <= in_1 < in_2;
         default: out <= 0;
         endcase
     end

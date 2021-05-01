@@ -5,8 +5,8 @@
 // Названия макроопеределений говорят сами за себя.
 // Порядок аргументах в макроопределениях - как в ассемблерной записи.
 
-`include "opcodes.vh"
-`include "funct.vh"
+`include "simple/opcodes.vh"
+`include "simple/funct.vh"
 
 `define ASM_ADD(T, S1, S2) {`OPCODE_AR, T, S1, S2, `FUNCT_ADD}
 `define ASM_SUB(T, S1, S2) {`OPCODE_AR, T, S1, S2, `FUNCT_SUB}

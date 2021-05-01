@@ -1,5 +1,35 @@
+/*
+module test(); //dmem test
+    reg clk = 0;
+    always #2 clk = !clk;
+    initial #75 $finish;
 
-module test();
+    reg [15:0] addr;
+    reg [15:0] id;
+    reg w;
+
+    wire [15:0] od;
+
+    dmem testee(.addr(addr), .id(id), .w(w), .clk(clk), .od(od));
+
+    initial begin 
+    	$dumpfile("dump.vcd");
+	    $dumpvars(0, test);
+
+	    addr = 10;
+	    id = 100;
+	    w = 0;
+	    #4 w = 1;
+	    #4 id = 120; addr = 1;
+	    #4 w = 0;
+	    #4 addr = 10;
+	end
+
+endmodule
+*/
+
+/*
+module test(); //reg_block test
     reg clk = 0;
     always #2 clk = !clk;
     initial #75 $finish;
@@ -19,13 +49,13 @@ module test();
 	wire reg_3_out;
 	wire reg_4_out;
 
-    reg_block testee(.rn_1(rn_1), .rn_2(rn_2), .rst(rst), .wn(wn), .w(w), .wd(wd), .rd_1(rd_1), .rd_2(rd_2), .reg_1_store(reg_1_out), .reg_2_store(reg_2_out), .reg_3_store(reg_3_out), .reg_4_store(reg_4_out));
+    reg_block testee(.rn_1(rn_1), .rn_2(rn_2), .clk(clk), .rst(rst), .wn(wn), .w(w), .wd(wd), .rd_1(rd_1), .rd_2(rd_2)); 
 
     initial begin
 	    $dumpfile("dump.vcd");
-	    $dumpvars(1, test);
+	    $dumpvars(0, test);
 	    $display("time \t clock \t rst \t rn_1 \t rn_2 \t rst \t wn \t w \t wd \t rd_1 \t rd_2");
-	    $monitor(" %2d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d", $stime, clk, rst, rn_1, rn_2, rst, wn, w, wd, rd_1, rd_2, reg_1_out, reg_2_out, reg_3_out, reg_4_out);
+	    $monitor(" %2d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d \t %1d", $stime, clk, rst, rn_1, rn_2, rst, wn, w, wd, rd_1, rd_2); 
 
 	    rst = 1;
 	    rn_1 = 0;
@@ -34,13 +64,13 @@ module test();
 	    wd = 15;
 	    w = 0;
 	    #4 rst = 0; w = 1;
-	    #8 wn = 17; wn = 0;
-	    #8 rn_1 = 1; rn_2 = 3; wd = 100; wn = 1;
-	    #8 w = 0; rn_2 = 2;
+	    #4 wn = 17; wn = 0;
+	    #4 rn_1 = 1; rn_2 = 3; wd = 100; wn = 1;
+	    #4 w = 0; rn_2 = 2;
 
 	end
 endmodule
-
+*/
 
 /*
 module test(); //test for demult2_4
@@ -108,7 +138,7 @@ endmodule
 
 
 /*
-module test(); //test for register
+module test(); //test for register (and pc)
     reg clk = 0;
     always #2 clk = !clk;
     initial #75 $finish;
