@@ -2,9 +2,9 @@
 
 module alu ( input [15:0] in_1,
              input [15:0] in_2,
-             input [3:0] op,
+             input [3:0] op,    // control
 
-             output zero,
+             output zero,       // control
              output reg [15:0] out );
 
     always @(in_1, in_2, op) begin

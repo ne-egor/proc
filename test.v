@@ -137,7 +137,7 @@ endmodule
 
 
 
-/*
+
 module test(); //test for register (and pc)
     reg clk = 0;
     always #2 clk = !clk;
@@ -146,7 +146,7 @@ module test(); //test for register (and pc)
     reg [15:0] in; reg rst; reg store; 
     wire [15:0] out;
 
-    register testee(.in(in), .clk(clk), .rst(rst), .store(store), .out(out));
+    pc testee(.in(in), .clk(clk), .rst(rst), .store(store), .out(out));
 
     initial begin
 	    $dumpfile("dump.vcd");
@@ -164,4 +164,3 @@ module test(); //test for register (and pc)
 
 	end
 endmodule
-*/

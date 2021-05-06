@@ -1,10 +1,9 @@
-module dmem (
-	input clk,    // Clock
-	input [15:0] addr,
-	input [15:0] id,
-	input w,
+module dmem (	input clk,    //
+				input [15:0] addr,	//data
+				input [15:0] id,	//data
+				input w,	// control
 
-	output [15:0] od);
+				output [15:0] od);	//data
 
 	reg [15:0] RAM[31:0];
 

@@ -33,6 +33,17 @@ module mult4_2 (input [15:0] in_1,
 
 endmodule
 
+module mux2_1 (in_1, in_2, num, out);
+    parameter len = 16;
+    input [len - 1: 0] in_1;
+    input [len - 1: 0] in_2;
+    input num;
+    output [len - 1: 0] out;
+
+    assign out = num ? in_2 : in_1;
+endmodule
+
+
 module demult2_4 ( input in,
                    input [1:0] num,
 

@@ -1,9 +1,9 @@
-module reg_block( input [1:0] rn_1,
+module reg_block( input [1:0] rn_1,	//
                   input [1:0] rn_2,
                   input [1:0] wn,
                   input clk,
-                  input rst,
-                  input w,
+                  input rst,	// control
+                  input w,		// control
                   input [15:0] wd,
 
                   output [15:0] rd_1,
