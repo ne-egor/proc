@@ -1,3 +1,26 @@
+module test();
+
+	reg clk = 0;
+    always #2 clk = !clk;
+    initial #100 $finish;
+
+    reg rst;
+
+    cpu _cpu(.clk(clk), .rst(rst));
+
+	initial begin
+	    $dumpfile("dump.vcd");
+	    $dumpvars(0, test);
+
+	    rst = 1;
+	    #4 rst = 0;
+	    #44 rst = 1;
+	    #4 rst = 0;
+	end
+
+endmodule
+
+
 /*
 module test(); //dmem test
     reg clk = 0;
@@ -137,7 +160,7 @@ endmodule
 
 
 
-
+/*
 module test(); //test for register (and pc)
     reg clk = 0;
     always #2 clk = !clk;
@@ -164,3 +187,4 @@ module test(); //test for register (and pc)
 
 	end
 endmodule
+*/
