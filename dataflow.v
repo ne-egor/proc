@@ -1,25 +1,29 @@
+`include "simple/asm.vh"
+
+
 module dataflow (	input clk,
-					input rst,
-
-					input pc_store,
-
-					input reg_block_w,
-					input dmem_w,
-
-					input [3:0] alu_funct,
-
-					input m1_num,
-					input m2_num, 
-					input m3_num, 
-					input m4_num, 
-					input m5_num,
-					input m6_num,
-					input m7_num,
-
-					output [5:0] opcode,
-					output [3:0] funct,
-					output alu_zero
+					input rst
 );
+
+	reg pc_store;
+
+	reg reg_block_w;
+	reg dmem_w;
+
+	reg [3:0] alu_funct;
+
+	reg m1_num;
+	reg m2_num; 
+	reg m3_num; 
+	reg m4_num; 
+	reg m5_num;
+	reg m6_num;
+	reg m7_num;
+
+	wire [5:0] opcode;
+	wire [3:0] funct;
+	wire zero;
+
 
 	wire [15:0] pc_in;
 	wire [15:0] pc_out;
@@ -60,9 +64,202 @@ module dataflow (	input clk,
 	reg_block _reg_block(.rn_1(m3_num ? s1 : t), .rn_2(m4_num ? s2 : s1), .wn(t), .clk(clk), .rst(rst), .w(reg_block_w), 
 		.wd(m7_num ? dmem_out : alu_out), .rd_1(reg_block_rd1), .rd_2(reg_block_rd2));
 
-	alu _alu(.in_1(m5_num ? reg_block_rd2 : reg_block_rd1), .in_2(m6_num ? constant : reg_block_rd2), .op(alu_funct), .zero(alu_zero), .out(alu_out));
+	alu _alu(.in_1(m5_num ? reg_block_rd2 : reg_block_rd1), .in_2(m6_num ? constant : reg_block_rd2), .op(alu_funct), .zero(zero), .out(alu_out));
 
 	dmem _dmem(.id(reg_block_rd1), .addr(alu_out), .clk(clk), .w(dmem_w), .od(dmem_out));
+
+
+
+
+	always @(opcode, funct, zero) 
+	case (opcode)
+		`OPCODE_AR: 
+					begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= funct;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1;
+						m5_num <= 0;
+						m6_num <= 0;
+						m7_num <= 0;
+					end
+		`OPCODE_ADDIU:
+					begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_ADD;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_ADDI:
+					begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_ADD;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_ANDIU: begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_AND;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_ANDI: begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_AND;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_ORIU: begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_OR;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_ORI: begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_OR;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_SLTIU: begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_SLTU;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_SLTI: begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_SLT;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 1; // dc
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 0;
+					end
+		`OPCODE_BEQ: begin
+						pc_store <= 1;
+						reg_block_w <= 0;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_SUB;
+						m1_num <= zero;
+						m2_num <= 0;
+						m3_num <= 0;
+						m4_num <= 0; 
+						m5_num <= 0;
+						m6_num <= 0;
+						m7_num <= 0; //dc
+					end
+		`OPCODE_BNE: begin
+						pc_store <= 1;
+						reg_block_w <= 0;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_SUB;
+						m1_num <= !zero;
+						m2_num <= 0;
+						m3_num <= 0;
+						m4_num <= 0; 
+						m5_num <= 0;
+						m6_num <= 0;
+						m7_num <= 0; //dc
+					end
+		`OPCODE_LW: begin
+						pc_store <= 1;
+						reg_block_w <= 1;
+						dmem_w <= 0;
+						alu_funct <= `FUNCT_ADD;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 1;
+						m4_num <= 0; //dc 
+						m5_num <= 0;
+						m6_num <= 1;
+						m7_num <= 1;
+					end
+		`OPCODE_SW: begin
+						pc_store <= 1;
+						reg_block_w <= 0;
+						dmem_w <= 1;
+						alu_funct <= `FUNCT_ADD;
+						m1_num <= 0;
+						m2_num <= 0;
+						m3_num <= 0;
+						m4_num <= 0; 
+						m5_num <= 1;
+						m6_num <= 1;
+						m7_num <= 0; //dc 
+					end
+		`OPCODE_J: begin
+						pc_store <= 1;
+						reg_block_w <= 0;
+						dmem_w <= 0;
+						alu_funct <= 0;
+						m1_num <= 0;
+						m2_num <= 1;
+						m3_num <= 1; // dc
+						m4_num <= 1; // dc
+						m5_num <= 0; // dc
+						m6_num <= 1; // dc
+						m7_num <= 0; // dc
+					end
+	endcase // opcode
+
 
 
 	/*
